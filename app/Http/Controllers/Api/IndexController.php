@@ -77,6 +77,11 @@ class IndexController extends Controller
         $customers=User::where('role',\Role::Customer)->get();
         return $this->sendSuccess("Customers fetched successful", $customers);
     }
+    public function fetchSubscriptions(Request $request){
+        $packages=Package::all();
+        return $this->sendSuccess("Packages fetched successful", $packages);
+    }
+
     public function fetchCustomer(Request $request){
         $validators = Validator($request->all(), [
             'id' => 'required',
@@ -135,6 +140,41 @@ class IndexController extends Controller
         $tasks=Tasks::orderBy('created_at','ASC')->get();
         return $this->sendSuccess("Tasks fetched successful",$tasks);
     }
+
+    public function fetchCars(Request $request){
+        $validators = Validator($request->all(), [
+            'id' => 'required',
+        ],[
+            'id.required'=>'Customer id is required'
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        $cars=Car::with('order','order.tasks','order.subscription')->where('user_id',$request->id)->get();
+        return $this->sendSuccess("Cars fetched successful",$cars);
+    }
+    public function cancelSubscription(Request $request){
+        $validators = Validator($request->all(), [
+            'id' => 'required',
+        ],[
+            'id.required'=>'Order id is required'
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        $order=Order::find($request->id);
+        $order->renew_on=null;
+        $order->save();
+        return $this->sendSuccess("Subscription cancelled successful",true);
+    }
+    public function fetchUser(Request $request){
+        $user=auth()->user();
+        return $this->sendSuccess("Auth user fetched successful",$user);
+    }
+
+
+
+
     public function createCarSubscription(Request $request){
         $validators = Validator($request->all(), [
             'make' => 'required',
@@ -165,13 +205,18 @@ class IndexController extends Controller
         $order->subscription_id=$subscription->id;
         $order->price=$subscription->price;
         $order->save();
-
-        foreach (getNext4Sundays() as $sunday){
-            $task=new Tasks();
-            $task->date=$sunday;
-            $task->status=0;
-            $task->order_id=$order->id;
-            $task->save();
+        if($subscription->is_recurring==1){
+            $lastSunday=date('Y-m-d');
+            foreach (getNext4Sundays() as $sunday){
+                $task=new Tasks();
+                $task->date=$sunday;
+                $task->status=0;
+                $task->order_id=$order->id;
+                $task->save();
+                $lastSunday=$sunday;
+            }
+            $order->renew_on=$lastSunday;
+            $order->save();
         }
         return $this->sendSuccess("Car and subscription created successfully", $car);
     }
@@ -216,6 +261,8 @@ class IndexController extends Controller
             return $this->sendError("Incorrect current password!", null);
         }
     }
-
+    public function test(){
+        echo 'TEST';
+    }
 
 }

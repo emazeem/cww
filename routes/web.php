@@ -13,4 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {return var_dump(\App\Models\Package::all());});
+Route::get('/', [\App\Http\Controllers\Api\IndexController::class,'test']);
