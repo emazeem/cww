@@ -16,7 +16,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('taskMarkAsDone', [IndexController::class, 'taskMarkAsDone']);
     Route::post('paymentMarkAsDone', [IndexController::class, 'paymentMarkAsDone']);
     Route::post('fetchTasks', [IndexController::class, 'fetchTasks']);
+    Route::post('fetchTask', [IndexController::class, 'fetchTask']);
     Route::post('fetchCars', [IndexController::class, 'fetchCars']);
     Route::post('cancelSubscription', [IndexController::class, 'cancelSubscription']);
     Route::post('fetchUser', [IndexController::class, 'fetchUser']);
+    Route::post('fetchInvoices', [IndexController::class, 'fetchInvoices']);
+    Route::post('fetchActivities', [IndexController::class, 'fetchActivities']);
+    Route::post('changePassword', [IndexController::class, 'changePassword']);
 });

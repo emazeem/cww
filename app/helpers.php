@@ -36,3 +36,10 @@ function getNext4Sundays() {
     return $upcomingSundays;
 
 }
+function logActivity($message){
+    $activity=new \App\Models\Activity();
+    $activity->message=$message;
+    $activity->created_by=auth()->user()->id;
+    $activity->role=auth()->user()->role;
+    $activity->save();
+}
