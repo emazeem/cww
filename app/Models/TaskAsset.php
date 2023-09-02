@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class TaskAsset extends Model
 {
     use HasFactory;
-    public function getCreatedAtAttribute()
+    public function getImagesAttribute()
     {
         return url('storage/tasks/'.$this->image);
     }
