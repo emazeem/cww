@@ -137,13 +137,7 @@ class IndexController extends Controller
         $order=Order::find($request->id);
         $order->payment=\OrderPayment::Complete;
         $order->payment_date=date('Y-m-d');
-        if ($request->hasfile('receipt')) {
-            $file = $request->file('receipt');
-            $extenstion = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $extenstion;
-            $file->move('storage/order-receipt', $filename);
-            $order->receipt = $filename;
-        }
+
         $order->save();
         logActivity(auth()->user()->name.' received payment of Order#'.str_pad($order->id,4,0,STR_PAD_LEFT).'.');
 
@@ -235,6 +229,28 @@ class IndexController extends Controller
 
         return $this->sendSuccess("Image uploaded successful",);
     }
+    public function uploadReceipt(Request $request){
+        $validators = Validator($request->all(), [
+            'id' => 'required',
+            "image"   => "required|image|mimes:jpg,jpeg,png",
+        ],[
+            'id.required'=>'Order id is required'
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+
+        $order=Order::find($request->id);
+        $file = $request->file('receipt');
+        $extenstion = $file->getClientOriginalExtension();
+        $filename = time() . '.' . $extenstion;
+        $file->move('storage/receipt', $filename);
+        $order->receipt = $filename;
+        $order->save();
+
+        return $this->sendSuccess("Receipt uploaded successful",);
+    }
+
 
 
     public function changePassword(Request $request){
