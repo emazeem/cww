@@ -81,6 +81,11 @@ class IndexController extends Controller
     }
     public function fetchTask(Request $request){
         $task=Tasks::with('order','order.car','order.car.user')->where('id',$request->id)->first();
+        $images=[];
+        foreach ($task->assets as $asset){
+            $images[]=$asset->image;
+        }
+        $task->images=$images;
         return $this->sendSuccess("Task fetched successful", $task);
     }
 
