@@ -12,7 +12,7 @@ class Tasks extends Model
         return $this->belongsTo(Order::class);
     }
     public function assets(){
-        return $this->hasMany(TaskAsset::class);
+        return $this->hasMany(TaskAsset::class,'task_id','id');
     }
 
 }
