@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Activity extends Model
 {
     use HasFactory;
-    public function getCreatedAtHumanDiffAttribute()
+    public function getCreatedAtAttribute()
     {
         return Carbon::parse($this->created_at)->diffForHumans();
     }
