@@ -8,6 +8,7 @@ use App\Models\Activity;
 use App\Models\Car;
 use App\Models\Order;
 use App\Models\Package;
+use App\Models\TaskAsset;
 use App\Models\Tasks;
 use App\Models\User;
 use Illuminate\Console\View\Components\Task;
@@ -212,6 +213,29 @@ class IndexController extends Controller
         $activites=Activity::all();
         return $this->sendSuccess("Invoices fetched successful",$activites);
     }
+    public function uploadTaskImage(Request $request){
+        $validators = Validator($request->all(), [
+            'id' => 'required',
+            "image"   => "required|image|mimes:jpg,jpeg,png",
+        ],[
+            'id.required'=>'Task id is required'
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        $asset=new TaskAsset();
+        $asset->task_id=$request->id;
+
+        $file = $request->file('image');
+        $extenstion = $file->getClientOriginalExtension();
+        $filename = time() . '.' . $extenstion;
+        $file->move('storage/tasks', $filename);
+        $asset->image = $filename;
+        $asset->save();
+
+        return $this->sendSuccess("Image uploaded successful",);
+    }
+
 
     public function changePassword(Request $request){
         $validators = Validator($request->all(), [

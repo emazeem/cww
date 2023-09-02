@@ -11,4 +11,8 @@ class Tasks extends Model
     public function order(){
         return $this->belongsTo(Order::class);
     }
+    public function assets(){
+        return $this->hasMany(TaskAsset::class);
+    }
+
 }

@@ -23,4 +23,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('fetchInvoices', [IndexController::class, 'fetchInvoices']);
     Route::post('fetchActivities', [IndexController::class, 'fetchActivities']);
     Route::post('changePassword', [IndexController::class, 'changePassword']);
+    Route::post('uploadTaskImage', [IndexController::class, 'uploadTaskImage']);
 });
