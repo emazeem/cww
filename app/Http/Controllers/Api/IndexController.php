@@ -246,7 +246,7 @@ class IndexController extends Controller
         }
 
         $order=Order::find($request->id);
-        $file = $request->file('receipt');
+        $file = $request->file('image');
         $extenstion = $file->getClientOriginalExtension();
         $filename = time() . '.' . $extenstion;
         $file->move('storage/receipt', $filename);
