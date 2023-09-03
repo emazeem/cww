@@ -182,6 +182,18 @@ class IndexController extends Controller
             return $this->sendError($validators->messages()->first(), null);
         }
         $cars=Car::with('order','order.tasks','order.tasks.assets','order.subscription')->where('user_id',$request->id)->get();
+
+        foreach ($cars as $car){
+            foreach ($car->order as $order){
+                foreach ($order->tasks as $task){
+                    $images=[];
+                    foreach ($task->assets as $asset){
+                        $images[]=$asset->image;
+                    }
+                    $task->images=$images;
+                }
+            }
+        }
         return $this->sendSuccess("Cars fetched successful",$cars);
     }
     public function cancelSubscription(Request $request){
