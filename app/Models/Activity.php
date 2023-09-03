@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Model;
 class Activity extends Model
 {
     use HasFactory;
+    protected $table = 'activities';
     public function getCreatedAtAttribute()
     {
-        dd($this->created_at);
+        return Carbon::createFromTimeStamp(strtotime($this->created_at))->diffForHumans();
     }
 }
