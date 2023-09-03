@@ -11,6 +11,6 @@ class Activity extends Model
     use HasFactory;
     public function getCreatedAtAttribute()
     {
-        return Carbon::parse($this->created_at)->diffForHumans();
+        return Carbon::createFromTimeStamp(strtotime($this->created_at))->diffForHumans();
     }
 }
