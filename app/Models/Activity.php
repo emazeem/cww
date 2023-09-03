@@ -12,6 +12,6 @@ class Activity extends Model
     protected $table = 'activities';
     public function getCreatedAtAttribute()
     {
-        return Carbon::createFromTimeStamp(strtotime($this->created_at))->diffForHumans();
+        return Carbon::createFromTimeStamp(strtotime($this->attributes['created_at']))->diffForHumans();
     }
 }
