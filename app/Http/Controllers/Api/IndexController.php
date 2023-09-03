@@ -181,7 +181,7 @@ class IndexController extends Controller
         if ($validators->fails()) {
             return $this->sendError($validators->messages()->first(), null);
         }
-        $cars=Car::with('order','order.tasks','order.subscription')->where('user_id',$request->id)->get();
+        $cars=Car::with('order','order.tasks','order.tasks.assets','order.subscription')->where('user_id',$request->id)->get();
         return $this->sendSuccess("Cars fetched successful",$cars);
     }
     public function cancelSubscription(Request $request){
