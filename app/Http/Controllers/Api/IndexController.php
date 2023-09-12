@@ -450,21 +450,22 @@ class IndexController extends Controller
     public function home(){
         return view('welcome');
     }
-    public function checkout(Request $request){
-        
-        $validators = Validator($request->all(), [
-            'cko_token' => 'required',
+    public function checkout(Request $r){
+
+        $validators = Validator($r->all(), [
+            'token' => 'required',
             'name'=>'required',
             'card_number'=>'required',
             'expiry_month'=>'required',
             'expiry_year'=>'required',
             'order_id'=>'required',
         ]);
+
         if ($validators->fails()) {
             return $this->sendError($validators->messages()->first(), null);
         }
 
-        $order=Order::find($request->order_id);
+        $order=Order::find($r->order_id);
 
         $log = new Logger("checkout-sdk-php-sample");
         $log->pushHandler(new StreamHandler("php://stdout"));
@@ -478,11 +479,12 @@ class IndexController extends Controller
             http_response_code(400);
         }
 
-        $postData = file_get_contents("php://input");
+        /*$postData = file_get_contents("php://input");
         $request = json_decode($postData);
-        $requestTokenSource = new RequestTokenSource();
-        $requestTokenSource->token = $request->cko_token;
+        */
 
+        $requestTokenSource = new RequestTokenSource();
+        $requestTokenSource->token = $r->token;
         $request = new PaymentRequest();
         $request->source = $requestTokenSource;
         $request->currency = Currency::$SAR;

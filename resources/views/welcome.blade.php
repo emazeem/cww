@@ -159,7 +159,15 @@
         Frames.submitCard()
             .then(function (data) {
                 console.log('tk : '+data.token);
+
+                var tokenInput = document.createElement('input');
+                tokenInput.type = 'hidden';
+                tokenInput.name = 'token'; // Replace with the appropriate field name
+                tokenInput.value = data.token; // Set the token value to 'xyz'
+                form.appendChild(tokenInput);
+
                 Frames.addCardToken(form, data.token);
+
                 form.submit();
             })
             .catch(function (error) {
