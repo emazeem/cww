@@ -189,6 +189,12 @@ class IndexController extends Controller
         }
         return $this->sendSuccess("Tasks fetched successful",$tasksByDate);
     }
+    public function fetchMyCars(Request $request){
+
+        $cars=Car::where('user_id',auth()->user()->id)->with('order','user','order.tasks')->get();
+        return $this->sendSuccess("My Cars fetched successful",$cars);
+    }
+
 
     public function fetchCars(Request $request){
         $validators = Validator($request->all(), [
