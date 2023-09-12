@@ -11,6 +11,12 @@ class TaskStatus
     const Pending = 0;
     const Complete = 1;
 }
+class PaymentType
+{
+    const COD = 'cash-on-delivery';
+    const ONLINE = 'online';
+}
+
 class OrderStatus
 {
     const Pending = 0;

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\IndexController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,4 +13,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [\App\Http\Controllers\Api\IndexController::class,'test']);
+Route::get('/', [IndexController::class,'home']);
+//Route::post('/checkout', [IndexController::class,'checkout'])->name('checkout');

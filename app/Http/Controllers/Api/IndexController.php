@@ -15,6 +15,24 @@ use Illuminate\Console\View\Components\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
+
+
+
+
+use Checkout\CheckoutApiException;
+use Checkout\CheckoutException;
+use Checkout\CheckoutSdk;
+use Checkout\Common\Currency;
+use Checkout\Environment;
+use Checkout\Payments\Request\PaymentRequest;
+use Checkout\Payments\Request\Source\RequestTokenSource;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
+
+
+
+
+
 class IndexController extends Controller
 {
     use CommonTrait;
@@ -218,9 +236,18 @@ class IndexController extends Controller
         $orders=Order::with('car','car.user')->get();
         return $this->sendSuccess("Invoices fetched successful",$orders);
     }
+    public function fetchMyInvoices(Request $request){
+        $orders=Order::with([
+            'car' => function ($query) {
+                $query->where('user_id',auth()->user()->id);
+            },'car.user']
+        )->get();
+        return $this->sendSuccess("My Invoices fetched successful",$orders);
+    }
+
     public function fetchActivities(Request $request){
         $activites=Activity::all();
-        return $this->sendSuccess("Invoices fetched successful",$activites);
+        return $this->sendSuccess("Activities fetched successful",$activites);
     }
     public function uploadTaskImage(Request $request){
         $validators = Validator($request->all(), [
@@ -261,6 +288,7 @@ class IndexController extends Controller
         $filename = time() . '.' . $extenstion;
         $file->move('storage/receipt', $filename);
         $order->receipt = $filename;
+        $order->payment_type=\PaymentType::COD;
         $order->save();
 
         return $this->sendSuccess("Receipt uploaded successful",);
@@ -414,5 +442,60 @@ class IndexController extends Controller
         }
         dd($tasksByDate);
     }
+    public function home(){
+        return view('welcome');
+    }
+    public function checkout(Request $request){
+        $validators = Validator($request->all(), [
+            'token' => 'required',
+            'name'=>'required',
+            'card_number'=>'required',
+            'expiry_month'=>'required',
+            'expiry_year'=>'required',
+            'order_id'=>'required',
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+
+        $order=Order::find($request->order_id);
+
+        $log = new Logger("checkout-sdk-php-sample");
+        $log->pushHandler(new StreamHandler("php://stdout"));
+        try {
+            $api = CheckoutSdk::builder()->staticKeys()
+                ->environment(Environment::sandbox())
+                ->secretKey(env('CHECKOUT_SECRET_KEY'))
+                ->build();
+        } catch (CheckoutException $e) {
+            $log->error("An exception occurred while initializing Checkout SDK : {$e->getMessage()}");
+            http_response_code(400);
+        }
+
+        $postData = file_get_contents("php://input");
+        $request = json_decode($postData);
+        $requestTokenSource = new RequestTokenSource();
+        $requestTokenSource->token = $request->token;
+
+        $request = new PaymentRequest();
+        $request->source = $requestTokenSource;
+        $request->currency = Currency::$SAR;
+        $request->amount = $order->price;
+        $request->processing_channel_id = env('CHECKOUT_CHANNEL_ID');
+
+        try {
+
+            $order->payment=\OrderStatus::Complete;
+            $order->receipt=json_encode($api->getPaymentsClient()->requestPayment($request));
+            $order->save();
+
+        } catch (CheckoutApiException $e) {
+            $log->error("An exception occurred while processing payment request");
+            http_response_code(400);
+            dd($e);
+        }
+    }
+
+
 
 }

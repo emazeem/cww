@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('price');
             $table->string('payment')->default(0);
             $table->date('payment_date')->nullable();
-            $table->string('receipt')->nullable();
+            $table->string('payment_type')->nullable();
+            $table->longText('receipt')->nullable();
             $table->integer('status')->default(0);
             $table->date('renew_on')->nullable();
             $table->timestamps();
