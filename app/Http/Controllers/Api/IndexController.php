@@ -450,9 +450,8 @@ class IndexController extends Controller
     public function home(){
         return view('welcome');
     }
-    public function checkout(Request $r){
-
-        $validators = Validator($r->all(), [
+    public function checkout(Request $req){
+        $validators = Validator($req->all(), [
             'token' => 'required',
             'name'=>'required',
             'card_number'=>'required',
@@ -460,12 +459,11 @@ class IndexController extends Controller
             'expiry_year'=>'required',
             'order_id'=>'required',
         ]);
-
         if ($validators->fails()) {
             return $this->sendError($validators->messages()->first(), null);
         }
 
-        $order=Order::find($r->order_id);
+        $order=Order::find($req->order_id);
 
         $log = new Logger("checkout-sdk-php-sample");
         $log->pushHandler(new StreamHandler("php://stdout"));
@@ -476,14 +474,15 @@ class IndexController extends Controller
                 ->build();
         } catch (CheckoutException $e) {
             $log->error("An exception occurred while initializing Checkout SDK : {$e->getMessage()}");
-            return $this->sendError("An exception occurred while initializing Checkout SDK :  {$e->getMessage()} ", null);
+            return $this->sendError("An exception occurred while initializing Checkout SDK : {$e->getMessage()}", null);
+
         }
 
         $postData = file_get_contents("php://input");
         $request = json_decode($postData);
-
         $requestTokenSource = new RequestTokenSource();
-        $requestTokenSource->token = $r->token;
+        $requestTokenSource->token = $req->token;
+
         $request = new PaymentRequest();
         $request->source = $requestTokenSource;
         $request->currency = Currency::$SAR;
@@ -496,9 +495,12 @@ class IndexController extends Controller
             $order->receipt=json_encode($api->getPaymentsClient()->requestPayment($request));
             $order->save();
 
+            dd(json_encode($api->getPaymentsClient()->requestPayment($request)));
+
         } catch (CheckoutApiException $e) {
             $log->error("An exception occurred while processing payment request");
-            return $this->sendError("An exception occurred while processing payment request :  {$e->getMessage()} ", null);
+            http_response_code(400);
+            return $this->sendError("An exception occurred while processing payment request : {$e->getMessage()}", null);
 
         }
     }
