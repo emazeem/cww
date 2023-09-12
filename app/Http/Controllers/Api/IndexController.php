@@ -190,8 +190,7 @@ class IndexController extends Controller
         return $this->sendSuccess("Tasks fetched successful",$tasksByDate);
     }
     public function fetchMyCars(Request $request){
-
-        $cars=Car::where('user_id',auth()->user()->id)->with('order','user','order.tasks')->get();
+        $cars=Car::where('user_id',auth()->user()->id)->with('order')->get();
         return $this->sendSuccess("My Cars fetched successful",$cars);
     }
 
