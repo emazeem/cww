@@ -476,7 +476,7 @@ class IndexController extends Controller
                 ->build();
         } catch (CheckoutException $e) {
             $log->error("An exception occurred while initializing Checkout SDK : {$e->getMessage()}");
-            http_response_code(400);
+            return $this->sendError("An exception occurred while initializing Checkout SDK :  {$e->getMessage()} ", null);
         }
 
         /*$postData = file_get_contents("php://input");
@@ -499,8 +499,8 @@ class IndexController extends Controller
 
         } catch (CheckoutApiException $e) {
             $log->error("An exception occurred while processing payment request");
-            http_response_code(400);
-            dd($e);
+            return $this->sendError("An exception occurred while processing payment request :  {$e->getMessage()} ", null);
+
         }
     }
 
