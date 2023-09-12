@@ -463,6 +463,7 @@ class IndexController extends Controller
             return $this->sendError($validators->messages()->first(), null);
         }
 
+        dd($request->all(),$request->cko_token);
         $order=Order::find($request->order_id);
 
         $log = new Logger("checkout-sdk-php-sample");
