@@ -479,9 +479,8 @@ class IndexController extends Controller
             return $this->sendError("An exception occurred while initializing Checkout SDK :  {$e->getMessage()} ", null);
         }
 
-        /*$postData = file_get_contents("php://input");
+        $postData = file_get_contents("php://input");
         $request = json_decode($postData);
-        */
 
         $requestTokenSource = new RequestTokenSource();
         $requestTokenSource->token = $r->token;
