@@ -452,7 +452,7 @@ class IndexController extends Controller
     }
     public function checkout(Request $request){
         $validators = Validator($request->all(), [
-            'token' => 'required',
+            'cko_token' => 'required',
             'name'=>'required',
             'card_number'=>'required',
             'expiry_month'=>'required',
@@ -480,7 +480,7 @@ class IndexController extends Controller
         $postData = file_get_contents("php://input");
         $request = json_decode($postData);
         $requestTokenSource = new RequestTokenSource();
-        $requestTokenSource->token = $request->token;
+        $requestTokenSource->token = $request->cko_token;
 
         $request = new PaymentRequest();
         $request->source = $requestTokenSource;
