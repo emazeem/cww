@@ -451,6 +451,7 @@ class IndexController extends Controller
         return view('welcome');
     }
     public function checkout(Request $request){
+        
         $validators = Validator($request->all(), [
             'cko_token' => 'required',
             'name'=>'required',
@@ -463,7 +464,6 @@ class IndexController extends Controller
             return $this->sendError($validators->messages()->first(), null);
         }
 
-        dd($request->all(),$request->cko_token);
         $order=Order::find($request->order_id);
 
         $log = new Logger("checkout-sdk-php-sample");

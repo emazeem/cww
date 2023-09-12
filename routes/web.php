@@ -14,4 +14,4 @@ use App\Http\Controllers\Api\IndexController;
 */
 
 Route::get('/', [IndexController::class,'home']);
-//Route::post('/checkout', [IndexController::class,'checkout'])->name('checkout');
+Route::post('/checkout', [IndexController::class,'checkout'])->name('checkout');
