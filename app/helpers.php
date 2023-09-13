@@ -57,6 +57,7 @@ function logTransaction($order,$type){
     $transaction->user_id=$order->car->user_id;
     $transaction->order_id=$order->id;
     $transaction->narration="Payment of car [ model = {$order->car->model} make = {$order->car->model} plate = {$order->car->model} via {$type}]";
+    $transaction->amount=$order->price;
     $transaction->save();
     return true;
 }
