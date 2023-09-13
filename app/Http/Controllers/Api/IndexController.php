@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\Package;
 use App\Models\TaskAsset;
 use App\Models\Tasks;
+use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Console\View\Components\Task;
 use Illuminate\Http\Request;
@@ -241,6 +242,7 @@ class IndexController extends Controller
         $orders=Order::with('car','car.user')->get();
         return $this->sendSuccess("Invoices fetched successful",$orders);
     }
+
     public function fetchMyInvoices(Request $request){
         $orders=Order::with([
             'car' => function ($query) {
@@ -249,6 +251,11 @@ class IndexController extends Controller
         )->get();
         return $this->sendSuccess("My Invoices fetched successful",$orders);
     }
+    public function fetchMyTransactions(Request $request){
+        $orders=Transaction::where('user_id',auth()->user()->id);
+        return $this->sendSuccess("My Trx fetched successful",$orders);
+    }
+
 
     public function fetchActivities(Request $request){
         $activites=Activity::all();
@@ -493,8 +500,9 @@ class IndexController extends Controller
 
 
             try {
-                $order->payment=\OrderStatus::Complete;
+                $order->payment=\OrderPayment::Complete;
                 $order->receipt=json_encode($api->getPaymentsClient()->requestPayment($request));
+                $order->payment_date=date('Y-m-d');
                 $order->save();
                 logTransaction($order->id,"bank : {$req->card_number}");
                 return $this->sendSuccess("Checkout successful!", true);
