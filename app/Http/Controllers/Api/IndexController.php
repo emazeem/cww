@@ -252,7 +252,7 @@ class IndexController extends Controller
         return $this->sendSuccess("My Invoices fetched successful",$orders);
     }
     public function fetchMyTransactions(Request $request){
-        $orders=Transaction::where('user_id',auth()->user()->id);
+        $orders=Transaction::where('user_id',auth()->user()->id)->get();
         return $this->sendSuccess("My Trx fetched successful",$orders);
     }
 
