@@ -49,3 +49,14 @@ function logActivity($message){
     $activity->role=auth()->user()->role;
     $activity->save();
 }
+function logTransaction($order,$type){
+
+    //$type can be cash or via bank
+    $order=\App\Models\Order::find($order);
+    $transaction=new \App\Models\Transaction();
+    $transaction->user_id=$order->car->user_id;
+    $transaction->order_id=$order->id;
+    $transaction->narration="Payment of car [ model = {$order->car->model} make = {$order->car->model} plate = {$order->car->model} via {$type}]";
+    $transaction->save();
+    return true;
+}
