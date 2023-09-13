@@ -190,7 +190,7 @@ class IndexController extends Controller
         return $this->sendSuccess("Tasks fetched successful",$tasksByDate);
     }
     public function fetchMyCars(Request $request){
-        $cars=Car::where('user_id',auth()->user()->id)->with('order')->get();
+        $cars=Car::where('user_id',auth()->user()->id)->with('order','user')->get();
         return $this->sendSuccess("My Cars fetched successful",$cars);
     }
 
@@ -487,7 +487,7 @@ class IndexController extends Controller
 
             $request = new PaymentRequest();
             $request->source = $requestTokenSource;
-            $request->currency = Currency::$GBP;
+            $request->currency = Currency::$SAR;
             $request->amount = $order->price;
             $request->processing_channel_id = env('CHECKOUT_CHANNEL_ID');
 
@@ -509,5 +509,5 @@ class IndexController extends Controller
             return $this->sendSuccess("Already paid!", true);
         }
     }
-    
+
 }
