@@ -31,5 +31,4 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('checkout', [IndexController::class, 'checkout']);
     Route::post('createExpense', [IndexController::class, 'createExpense']);
     Route::post('fetchExpenses', [IndexController::class, 'fetchExpenses']);
-    Route::post('fetchMyExpenses', [IndexController::class, 'fetchMyExpenses']);
 });

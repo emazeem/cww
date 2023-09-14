@@ -169,12 +169,18 @@ class IndexController extends Controller
         return $this->sendSuccess("Expense added successfully",true);
     }
     public function fetchExpenses(Request $request){
-        $expenses=Expense::with('user')->get();
+        if(auth()->user()->role == \Role::Technician){
+            $expenses=Expense::with('user')->where('user_id',auth()->user()->id)->get();
+
+        }
+        if(auth()->user()->role == \Role::Manager){
+            $expenses=Expense::with('user')->get();
+
+        }
         return $this->sendSuccess("Expense fetched successfully",$expenses);
     }
     public function fetchMyExpenses(Request $request){
         $expenses=Expense::with('user')->where('user_id',auth()->user()->id)->get();
-
         return $this->sendSuccess("My Expenses fetched successfully",$expenses);
     }
 
