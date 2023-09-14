@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\CommonTrait;
 use App\Models\Activity;
 use App\Models\Car;
+use App\Models\Expense;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\TaskAsset;
@@ -149,6 +150,30 @@ class IndexController extends Controller
 
         return $this->sendSuccess("Task marked as done successful",true);
     }
+    public function createExpense(Request $request){
+        $validators = Validator($request->all(), [
+            'type' => 'required',
+            'narration' => 'required',
+            'amount' => 'required',
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        $expense=new Expense();
+        $expense->user_id=auth()->user()->id;
+        $expense->type=$request->type;
+        $expense->narration=$request->narration;
+        $expense->amount=$request->amount;
+        $expense->save();
+
+        return $this->sendSuccess("Expense added successfully",true);
+    }
+    public function fetchExpenses(Request $request){
+        $expenses=Expense::all();
+        return $this->sendSuccess("Expense fetched successfully",$expenses);
+    }
+
+
     public function paymentMarkAsDone(Request $request){
         $validators = Validator($request->all(), [
             'id' => 'required',
