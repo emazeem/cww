@@ -169,8 +169,13 @@ class IndexController extends Controller
         return $this->sendSuccess("Expense added successfully",true);
     }
     public function fetchExpenses(Request $request){
-        $expenses=Expense::all();
+        $expenses=Expense::with('user')->get();
         return $this->sendSuccess("Expense fetched successfully",$expenses);
+    }
+    public function fetchMyExpenses(Request $request){
+        $expenses=Expense::with('user')->where('user_id',auth()->user()->id)->get();
+
+        return $this->sendSuccess("My Expenses fetched successfully",$expenses);
     }
 
 
