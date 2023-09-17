@@ -155,6 +155,7 @@ class IndexController extends Controller
             'type' => 'required',
             'narration' => 'required',
             'amount' => 'required',
+            'image' => 'required',
         ]);
         if ($validators->fails()) {
             return $this->sendError($validators->messages()->first(), null);
@@ -164,6 +165,14 @@ class IndexController extends Controller
         $expense->type=$request->type;
         $expense->narration=$request->narration;
         $expense->amount=$request->amount;
+
+        $file = $request->file('image');
+        $extenstion = $file->getClientOriginalExtension();
+        $filename = time() . '.' . $extenstion;
+        $file->move('storage/expense', $filename);
+        $expense->image = $filename;
+
+        
         $expense->save();
 
         return $this->sendSuccess("Expense added successfully",true);

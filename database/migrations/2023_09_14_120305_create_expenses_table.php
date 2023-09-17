@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('type');
             $table->string('narration');
             $table->string('amount');
+            $table->string('image');
             $table->timestamps();
         });
     }
