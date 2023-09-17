@@ -447,6 +447,25 @@ class IndexController extends Controller
 
         return $this->sendSuccess("User details updated successfully", true);
     }
+    public function updateLocation(Request $request){
+        $validators = Validator($request->all(), [
+            'user_id' => 'required',
+            'long' => 'required',
+            'lat' => 'required',
+            'address' => 'required',
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        $user = User::find($request->user_id);
+        $user->long=$request->long;
+        $user->lat=$request->lat;
+        $user->address=$request->address;
+        $user->save();
+
+        return $this->sendSuccess("Location updated successfully", true);
+    }
+
     public function updatePassword(Request $request)
     {
         $validators = Validator($request->all(), [
