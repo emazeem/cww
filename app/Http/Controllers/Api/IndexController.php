@@ -13,6 +13,7 @@ use App\Models\TaskAsset;
 use App\Models\Tasks;
 use App\Models\Transaction;
 use App\Models\User;
+use App\Models\UserDevices;
 use Illuminate\Console\View\Components\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -171,10 +172,8 @@ class IndexController extends Controller
         $filename = time() . '.' . $extenstion;
         $file->move('storage/expense', $filename);
         $expense->image = $filename;
-
-        
         $expense->save();
-
+        one_signal_notification(\Role::Manager,auth()->user()->name.' added new expense',true);
         return $this->sendSuccess("Expense added successfully",true);
     }
     public function fetchExpenses(Request $request){
@@ -579,6 +578,29 @@ class IndexController extends Controller
             }
         }else{
             return $this->sendSuccess("Already paid!", true);
+        }
+    }
+
+
+
+
+    public function storeNotificationDevice(Request $request)
+    {
+        $validators = Validator($request->all(), [
+            'device_id' => 'required',
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        $device = UserDevices::where('device_id', $request->device_id)->first();
+        if ($device) {
+            return $this->sendError('Device already exists.', null);
+        } else {
+            $user_device = new UserDevices;
+            $user_device->user_id = auth()->user()->id;
+            $user_device->device_id = $request->device_id;
+            $user_device->save();
+            return $this->sendSuccess("Device added successfully!", true);
         }
     }
 

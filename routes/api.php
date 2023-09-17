@@ -31,5 +31,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('uploadReceipt', [IndexController::class, 'uploadReceipt']);
     Route::post('checkout', [IndexController::class, 'checkout']);
     Route::post('createExpense', [IndexController::class, 'createExpense']);
+    Route::post('storeNotificationDevice', [IndexController::class, 'storeNotificationDevice']);
     Route::post('fetchExpenses', [IndexController::class, 'fetchExpenses']);
 });
