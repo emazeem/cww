@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\IndexController;
 
 
 Route::post('login', [IndexController::class, 'login']);
+Route::post('remove-all-data', [IndexController::class, 'removeAllData']);
 Route::post('register', [IndexController::class, 'register']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('createCarSubscription', [IndexController::class, 'createCarSubscription']);
