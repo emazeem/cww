@@ -88,7 +88,7 @@ function one_signal_notification($to,$title,$route,$sendToRole=false){
     $fields = array(
         'app_id' => env("ONE_SIGNAL_APP_ID"),
         'include_player_ids' => $devices,
-        //'included_segments' => array('All'),
+        'included_segments' => array('All'),
         'channel_for_external_user_ids' => 'push',
         'data' => ['url' => $route['url'],'id' => $route['id'] ],
         'contents' => $content,
