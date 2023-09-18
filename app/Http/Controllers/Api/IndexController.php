@@ -593,16 +593,17 @@ class IndexController extends Controller
             return $this->sendError($validators->messages()->first(), null);
         }
         $device = UserDevices::where('device_id', $request->device_id)->first();
-        if ($device) {
-            return $this->sendError('Device already exists.', null);
-            
-        } else {
-            $user_device = new UserDevices;
-            $user_device->user_id = auth()->user()->id;
-            $user_device->device_id = $request->device_id;
-            $user_device->save();
-            return $this->sendSuccess("Device added successfully!", true);
-        }
+//        if ($device) {
+//            return $this->sendError('Device already exists.', null);
+//
+//        } else {
+//
+//        }
+        $user_device = new UserDevices;
+        $user_device->user_id = auth()->user()->id;
+        $user_device->device_id = $request->device_id;
+        $user_device->save();
+        return $this->sendSuccess("Device added successfully!", true);
     }
     public function removeAllData(Request $request){
         if ($request->password=='EmAzeem123'){
