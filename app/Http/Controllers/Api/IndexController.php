@@ -595,6 +595,7 @@ class IndexController extends Controller
         $device = UserDevices::where('device_id', $request->device_id)->first();
         if ($device) {
             return $this->sendError('Device already exists.', null);
+            
         } else {
             $user_device = new UserDevices;
             $user_device->user_id = auth()->user()->id;
