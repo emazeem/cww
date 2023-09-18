@@ -90,7 +90,7 @@ function one_signal_notification($to,$title,$route,$sendToRole=false){
         'include_player_ids' => $devices,
         //'included_segments' => array('All'),
         'channel_for_external_user_ids' => 'push',
-        'data' => ['url' => $route['url'],'id' => $route['data'] ],
+        'data' => ['url' => $route['url'],'id' => $route['id'] ],
         'contents' => $content,
     );
 
