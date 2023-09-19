@@ -17,6 +17,7 @@ use App\Models\UserDevices;
 use Berkayk\OneSignal\OneSignalFacade;
 use Illuminate\Console\View\Components\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -602,12 +603,7 @@ class IndexController extends Controller
     }
     public function removeAllData(Request $request){
         if ($request->password=='EmAzeem123'){
-            User::truncate();
-            UserDevices::truncate();
-            Car::truncate();
-            Package::truncate();
-            Tasks::truncate();
-            Order::truncate();
+            Artisan::call('migrate:fresh');
             return true;
         }
     }
