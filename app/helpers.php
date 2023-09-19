@@ -63,6 +63,7 @@ function logTransaction($order,$type){
 }
 use App\Models\User;
 use App\Models\UserDevices;
+use Berkayk\OneSignal\OneSignalFacade;
 
 function one_signal_notification($to,$title,$route,$sendToRole=false){
 
@@ -78,35 +79,14 @@ function one_signal_notification($to,$title,$route,$sendToRole=false){
         ($sendToRole)
             ? UserDevices::whereIn('user_id', $uids)->get()
             : UserDevices::where('user_id', $to)->get();
-    $devices = [];
     foreach ($userDevices as $device) {
-        $devices[] = $device->device_id;
+        OneSignalFacade::sendNotificationToUser(
+            $title,
+            $device->device_id,
+            $route['url'],
+            $route['id'],
+            $buttons = null,
+            $schedule = null
+        );
     }
-    $content = array(
-        "en" => strip_tags($title),
-    );
-    $fields = array(
-        'app_id' => env("ONE_SIGNAL_APP_ID"),
-        'include_player_ids' => $devices,
-        'included_segments' => array('All'),
-        'channel_for_external_user_ids' => 'push',
-        'data' => ['url' => $route['url'],'id' => $route['id'] ],
-        'contents' => $content,
-    );
-
-    $fields = json_encode($fields);
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://onesignal.com/api/v1/notifications");
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json; charset=utf-8',
-        'Authorization: Basic ' . env("ONE_SIGNAL_REST_API_KEY")));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HEADER, false);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-
-    $response = curl_exec($ch);
-    curl_close($ch);
-    info($response);
 }
