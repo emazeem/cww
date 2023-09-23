@@ -14,6 +14,7 @@ class Tasks extends Model
     public function assets(){
         return $this->hasMany(TaskAsset::class,'task_id','id');
     }
-
-
+    public function getTimeAttribute(){
+        return date('H:i A',strtotime($this->time));
+    }
 }
