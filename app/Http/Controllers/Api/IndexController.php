@@ -374,20 +374,29 @@ class IndexController extends Controller
         }
     }
     public function createCarSubscription(Request $request){
-        foreach (getNext4Sundays() as $sunday){
-            dd($request->time[$sunday]);
-        }
-        dd($request->all());
         $validators = Validator($request->all(), [
             'make' => 'required',
             'model' => 'required',
             'plate' => 'required',
+            'time' => 'required',
             'user_id' => 'required',
             'subscription_id' => 'required',
         ]);
         if ($validators->fails()) {
             return $this->sendError($validators->messages()->first(), null);
         }
+
+
+        $timeData=explode('@',$request->time);
+
+        $dateAndTime=[];
+        foreach ($timeData as $timeDatum){
+            $x=explode('#',$timeDatum);
+            $dateAndTime[]=[$x[0]=>$x[1]];
+        }
+        dd($dateAndTime);
+
+
         $car = new Car();
         $car->model=$request->model;
         $car->make=$request->make;
@@ -412,7 +421,10 @@ class IndexController extends Controller
         $customer=User::find($request->user_id);
         if($subscription->is_recurring==1){
             $lastSunday=date('Y-m-d');
+
+
             foreach (getNext4Sundays() as $sunday){
+
                 $task=new Tasks();
                 $task->date=$sunday;
                 $task->time='09:00:00';
