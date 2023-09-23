@@ -374,6 +374,10 @@ class IndexController extends Controller
         }
     }
     public function createCarSubscription(Request $request){
+        foreach (getNext4Sundays() as $sunday){
+            dd($request->time[$sunday]);
+        }
+        dd($request->all());
         $validators = Validator($request->all(), [
             'make' => 'required',
             'model' => 'required',
