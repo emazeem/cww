@@ -392,7 +392,7 @@ class IndexController extends Controller
         $dateAndTime=[];
         foreach ($timeData as $timeDatum){
             $x=explode('#',$timeDatum);
-            if (count($x==2)){
+            if (count($x)){
                 $dateAndTime[]=[$x[0]=>$x[1]];
             }
         }
