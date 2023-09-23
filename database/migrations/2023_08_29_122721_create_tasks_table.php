@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('order_id');
             $table->date('date');
+            $table->time('time');
             $table->integer('status')->default(0);
             $table->timestamps();
         });

@@ -65,7 +65,6 @@ class IndexController extends Controller
             return $this->sendError("These credentials do not match our records.", null);
         }
     }
-
     public function register(Request $request){
         $validators = Validator($request->all(), [
             'name' => 'required',
@@ -351,9 +350,6 @@ class IndexController extends Controller
 
         return $this->sendSuccess("Receipt uploaded successful",);
     }
-
-
-
     public function changePassword(Request $request){
         $validators = Validator($request->all(), [
             'current_password' => 'required|min:8',
@@ -372,12 +368,6 @@ class IndexController extends Controller
             return $this->sendError("Incorrect current password!", null);
         }
     }
-
-
-
-
-
-
     public function createCarSubscription(Request $request){
         $validators = Validator($request->all(), [
             'make' => 'required',
@@ -416,6 +406,7 @@ class IndexController extends Controller
             foreach (getNext4Sundays() as $sunday){
                 $task=new Tasks();
                 $task->date=$sunday;
+                $task->time='09:00:00';
                 $task->status=0;
                 $task->order_id=$order->id;
                 $task->save();
@@ -430,6 +421,7 @@ class IndexController extends Controller
             $task=new Tasks();
             $task->date=getNext4Sundays()[0];
             $task->status=0;
+            $task->time='09:00:00';
             $task->order_id=$order->id;
             $task->save();
             logActivity(auth()->user()->name.' has created new order have one time wash for '.$customer->name);
@@ -582,10 +574,6 @@ class IndexController extends Controller
             return $this->sendSuccess("Already paid!", true);
         }
     }
-
-
-
-
     public function storeNotificationDevice(Request $request)
     {
         $validators = Validator($request->all(), [
