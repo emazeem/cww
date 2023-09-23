@@ -393,10 +393,9 @@ class IndexController extends Controller
         foreach ($timeData as $timeDatum){
             $x=explode('#',$timeDatum);
             if (count($x)==2){
-                $dateAndTime[]=[$x[0]=>$x[1]];
+                $dateAndTime[$x[0]]=$x[1];
             }
         }
-        dd($dateAndTime);
 
 
         $car = new Car();
@@ -429,7 +428,7 @@ class IndexController extends Controller
 
                 $task=new Tasks();
                 $task->date=$sunday;
-                $task->time='09:00:00';
+                $task->time=$dateAndTime[$sunday];
                 $task->status=0;
                 $task->order_id=$order->id;
                 $task->save();
