@@ -188,6 +188,18 @@ class IndexController extends Controller
         }
         return $this->sendSuccess("Expense fetched successfully",$expenses);
     }
+    public function fetchTasksFromDate(Request $request){
+
+        $validators = Validator($request->all(), [
+            'date' => 'required',
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        $tasks=Tasks::where('date',date('Y-m-d',strtotime($request->date)))->get();
+        return $this->sendSuccess("Tasks fetched successfully",$tasks);
+    }
+
     public function fetchMyExpenses(Request $request){
         $expenses=Expense::with('user')->where('user_id',auth()->user()->id)->get();
         return $this->sendSuccess("My Expenses fetched successfully",$expenses);
