@@ -235,6 +235,11 @@ class IndexController extends Controller
         }
         return $this->sendSuccess("Tasks fetched successful",$tasksByDate);
     }
+    public function fetch4sundays(Request $request){
+        $get4Sundays=getNext4Sundays();
+        return $this->sendSuccess("Get coming sundays successful",$get4Sundays);
+    }
+
     public function fetchMyCars(Request $request){
         $cars=Car::where('user_id',auth()->user()->id)->with('order','user')->get();
         return $this->sendSuccess("My Cars fetched successful",$cars);
