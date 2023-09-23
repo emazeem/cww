@@ -392,6 +392,7 @@ class IndexController extends Controller
         $dateAndTime=[];
         foreach ($timeData as $timeDatum){
             $x=explode('#',$timeDatum);
+            dd($timeDatum,'xxxxx' ,$x);
             $dateAndTime[]=[$x[0]=>$x[1]];
         }
         dd($dateAndTime);
