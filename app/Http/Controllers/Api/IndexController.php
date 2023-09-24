@@ -424,7 +424,7 @@ class IndexController extends Controller
         $customer=User::find($request->user_id);
 
 
-        $timeData=explode('@',$request->time);
+        $timeData=explode('@',$request->date_time);
         $dateAndTime=[];
         $lastSunday=date('Y-m-d');
 
