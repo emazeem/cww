@@ -390,23 +390,12 @@ class IndexController extends Controller
             'make' => 'required',
             'model' => 'required',
             'plate' => 'required',
-            'time' => 'required',
+            'date_time' => 'required',
             'user_id' => 'required',
             'subscription_id' => 'required',
         ]);
         if ($validators->fails()) {
             return $this->sendError($validators->messages()->first(), null);
-        }
-
-
-        $timeData=explode('@',$request->time);
-
-        $dateAndTime=[];
-        foreach ($timeData as $timeDatum){
-            $x=explode('#',$timeDatum);
-            if (count($x)==2){
-                $dateAndTime[$x[0]]=$x[1];
-            }
         }
 
 
@@ -431,35 +420,33 @@ class IndexController extends Controller
         $order->price=$subscription->price;
         $order->save();
 
+
         $customer=User::find($request->user_id);
-        if($subscription->is_recurring==1){
-            $lastSunday=date('Y-m-d');
 
 
-            foreach (getNext4Sundays() as $sunday){
+        $timeData=explode('@',$request->time);
+        $dateAndTime=[];
+        $lastSunday=date('Y-m-d');
 
+        foreach ($timeData as $timeDatum){
+            $x=explode('#',$timeDatum);
+            if (count($x)==2){
+                $dateAndTime[$x[0]]=$x[1];
                 $task=new Tasks();
-                $task->date=$sunday;
-                $task->time=$dateAndTime[$sunday];
+                $task->date=$x[0];
+                $task->time=$x[1];
                 $task->status=0;
                 $task->order_id=$order->id;
                 $task->save();
-                $lastSunday=$sunday;
+                $lastSunday=$x[0];
             }
+        }
+        if($subscription->is_recurring==1){
             $order->renew_on=$lastSunday;
             $order->save();
-
             logActivity(auth()->user()->name.' has created new order having 4washes for '.$customer->name);
-
         }else{
-            $task=new Tasks();
-            $task->date=getNext4Sundays()[0];
-            $task->status=0;
-            $task->time='09:00:00';
-            $task->order_id=$order->id;
-            $task->save();
             logActivity(auth()->user()->name.' has created new order have one time wash for '.$customer->name);
-
         }
         return $this->sendSuccess("Car and subscription created successfully", $car);
     }
