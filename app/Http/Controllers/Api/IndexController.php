@@ -228,7 +228,7 @@ class IndexController extends Controller
     public function fetchTasks(Request $request){
         $tasksByDate = [];
         $orderStatusMap = [];
-        foreach (Tasks::with('order','order.car','order.car.user')->get() as $task) {
+        foreach (Tasks::with('order','order.car','order.subscription','order.car.user')->get() as $task) {
             $date = $task["date"];
             if (!isset($tasksByDate[$date])) {
                 $tasksByDate[$date] = [];
