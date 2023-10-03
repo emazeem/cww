@@ -404,7 +404,7 @@ class IndexController extends Controller
         $car->make=$request->make;
         $car->plate=$request->plate;
         $car->user_id=$request->user_id;
-        if ($request->hasfile('image')) {
+        if ($request->image) {
             $file = $request->file('image');
             $extenstion = $file->getClientOriginalExtension();
             $filename = time() . '.' . $extenstion;

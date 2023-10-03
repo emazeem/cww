@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\IndexController;
+use App\Http\Controllers\WafeqInvoiceController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,3 +16,4 @@ use App\Http\Controllers\Api\IndexController;
 
 Route::get('/', [IndexController::class,'home']);
 Route::post('/checkout', [IndexController::class,'checkout'])->name('checkout');
+Route::get('invoice/create', [WafeqInvoiceController::class,'create'])->name('invoice.create');
