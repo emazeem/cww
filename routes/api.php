@@ -36,4 +36,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('storeNotificationDevice', [IndexController::class, 'storeNotificationDevice']);
     Route::post('fetchExpenses', [IndexController::class, 'fetchExpenses']);
     Route::post('fetchTasksFromDate', [IndexController::class, 'fetchTasksFromDate']);
+    Route::post('fetchTasksFromDates', [IndexController::class, 'fetchTasksFromDates']);
 });

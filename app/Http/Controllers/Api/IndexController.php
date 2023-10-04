@@ -18,6 +18,7 @@ use Berkayk\OneSignal\OneSignalFacade;
 use Illuminate\Console\View\Components\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -69,7 +70,7 @@ class IndexController extends Controller
         $validators = Validator($request->all(), [
             'name' => 'required',
             'email' => 'required|email|max:255|unique:users',
-            'phone' => 'required',
+            'phone' => 'required|unique:users',
             'password' => 'required|min:8',
             'role' => 'required',
             'address' => 'required',
@@ -199,6 +200,14 @@ class IndexController extends Controller
         $tasks=Tasks::where('date',date('Y-m-d',strtotime($request->date)))->get();
         return $this->sendSuccess("Tasks fetched successfully",$tasks);
     }
+    public function fetchTasksFromDates(Request $request){
+
+        $tasksCountByDate = Task::select(DB::raw('date AS task_date'), DB::raw('COUNT(*) as task_count'))
+            ->groupBy('date')
+            ->get();
+        return $this->sendSuccess("Tasks fetched successfully",$tasksCountByDate);
+    }
+
 
     public function fetchMyExpenses(Request $request){
         $expenses=Expense::with('user')->where('user_id',auth()->user()->id)->get();
