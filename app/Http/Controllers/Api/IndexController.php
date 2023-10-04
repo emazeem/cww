@@ -202,7 +202,7 @@ class IndexController extends Controller
     }
     public function fetchTasksFromDates(Request $request){
 
-        $tasksCountByDate = Task::select(DB::raw('date AS task_date'), DB::raw('COUNT(*) as task_count'))
+        $tasksCountByDate = Tasks::select(DB::raw('date AS task_date'), DB::raw('COUNT(*) as task_count'))
             ->groupBy('date')
             ->get();
         return $this->sendSuccess("Tasks fetched successfully",$tasksCountByDate);
