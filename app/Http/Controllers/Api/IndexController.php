@@ -43,13 +43,13 @@ class IndexController extends Controller
     use CommonTrait;
     public function login(Request $request){
         $validators = Validator($request->all(), [
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required',
         ]);
         if ($validators->fails()) {
             return $this->sendError($validators->messages()->first(), null);
         }
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->orwhere('phone',$request->email)->first();
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 $data['user'] = [
