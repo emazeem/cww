@@ -197,7 +197,7 @@ class IndexController extends Controller
         if ($validators->fails()) {
             return $this->sendError($validators->messages()->first(), null);
         }
-        $tasks=Tasks::where('date',date('Y-m-d',strtotime($request->date)))->get();
+        $tasks=Tasks::with('order','order.car','order.car.user')->where('date',date('Y-m-d',strtotime($request->date)))->get();
         return $this->sendSuccess("Tasks fetched successfully",$tasks);
     }
     public function fetchTasksFromDates(Request $request){
