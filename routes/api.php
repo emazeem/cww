@@ -11,6 +11,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('createCarSubscription', [IndexController::class, 'createCarSubscription']);
     Route::post('fetchCustomers', [IndexController::class, 'fetchCustomers']);
     Route::post('fetchSubscriptions', [IndexController::class, 'fetchSubscriptions']);
+    Route::post('updateSubscription', [IndexController::class, 'updateSubscription']);
     Route::post('editUser', [IndexController::class, 'editUser']);
     Route::post('updateLocation', [IndexController::class, 'updateLocation']);
     Route::post('updatePassword', [IndexController::class, 'updatePassword']);

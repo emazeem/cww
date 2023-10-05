@@ -497,6 +497,22 @@ class IndexController extends Controller
 
         return $this->sendSuccess("Location updated successfully", true);
     }
+    public function updateSubscription(Request $request){
+        $validators = Validator($request->all(), [
+            'id' => 'required',
+            'title' => 'required',
+            'price' => 'required',
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        $package = Package::find($request->id);
+        $package->title=$request->title;
+        $package->price=$request->price;
+        $package->save();
+        return $this->sendSuccess("Package updated successfully", true);
+    }
+
 
     public function updatePassword(Request $request)
     {
