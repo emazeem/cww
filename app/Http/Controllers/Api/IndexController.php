@@ -262,7 +262,7 @@ class IndexController extends Controller
     }
 
     public function fetchMyCars(Request $request){
-        $cars=Car::where('user_id',auth()->user()->id)->with('order','user')->get();
+        $cars=Car::where('user_id',auth()->user()->id)->with('order','order.subscription','user')->get();
         return $this->sendSuccess("My Cars fetched successful",$cars);
     }
 
