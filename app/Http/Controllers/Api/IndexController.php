@@ -454,6 +454,9 @@ class IndexController extends Controller
                 $task->order_id=$order->id;
                 $task->save();
                 $lastSunday=$x[0];
+                $user=User::find($request->user_id);
+                one_signal_notification($user->id,"{$user->name} you have a car wash today",['url'=>'task','id'=>$task->id]);
+
             }
         }
         if($subscription->is_recurring==1){
@@ -464,8 +467,6 @@ class IndexController extends Controller
             logActivity(auth()->user()->name.' has created new order have one time wash for '.$customer->name);
         }
         $this->bookInvoice($order);
-        $user=User::find($request->user_id);
-        one_signal_notification($user->id,"{$user->name} you have a car wash today",['url'=>'task','id'=>$task->id]);
 
         return $this->sendSuccess("Car and subscription created successfully", $car);
     }
