@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\CommonTrait;
+use App\Http\Traits\WafeqTrait;
 use App\Models\Activity;
 use App\Models\Car;
 use App\Models\Expense;
@@ -15,6 +16,7 @@ use App\Models\Transaction;
 use App\Models\User;
 use App\Models\UserDevices;
 use Berkayk\OneSignal\OneSignalFacade;
+use GuzzleHttp\Client;
 use Illuminate\Console\View\Components\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -42,7 +44,9 @@ use Monolog\Logger;
 class IndexController extends Controller
 {
     use CommonTrait;
+    use WafeqTrait;
     public function login(Request $request){
+
         $validators = Validator($request->all(), [
             'email' => 'required',
             'password' => 'required',
@@ -67,6 +71,7 @@ class IndexController extends Controller
         }
     }
     public function register(Request $request){
+
         $validators = Validator($request->all(), [
             'name' => 'required',
             'email' => 'required|email|max:255|unique:users',
@@ -96,6 +101,9 @@ class IndexController extends Controller
             $userdata->profile = $filename;
         }
         $userdata->save();
+        if ($userdata->role==\Role::Customer){
+            $this->createCustomer($userdata);
+        }
         return $this->sendSuccess("Register successful", $userdata);
     }
     public function fetchCustomers(Request $request){
@@ -431,8 +439,6 @@ class IndexController extends Controller
 
 
         $customer=User::find($request->user_id);
-
-
         $timeData=explode('@',$request->date_time);
         $dateAndTime=[];
         $lastSunday=date('Y-m-d');
@@ -457,6 +463,8 @@ class IndexController extends Controller
         }else{
             logActivity(auth()->user()->name.' has created new order have one time wash for '.$customer->name);
         }
+        $this->bookInvoice($order);
+
         return $this->sendSuccess("Car and subscription created successfully", $car);
     }
     public function editUser(Request $request){

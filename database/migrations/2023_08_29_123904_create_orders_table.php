@@ -22,6 +22,7 @@ return new class extends Migration
             $table->longText('receipt')->nullable();
             $table->integer('status')->default(0);
             $table->date('renew_on')->nullable();
+            $table->string('order_id')->nullable();
             $table->timestamps();
         });
     }

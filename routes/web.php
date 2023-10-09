@@ -17,3 +17,6 @@ use App\Http\Controllers\WafeqInvoiceController;
 Route::get('/', [IndexController::class,'home']);
 Route::post('/checkout', [IndexController::class,'checkout'])->name('checkout');
 Route::get('invoice/create', [WafeqInvoiceController::class,'create'])->name('invoice.create');
+Route::get('invoice/download', [WafeqInvoiceController::class,'download'])->name('invoice.download');
+
+
