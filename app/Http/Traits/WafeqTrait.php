@@ -49,6 +49,7 @@ trait WafeqTrait {
         $invoiceNo='INV#'.str_pad($order->id,4,0,STR_PAD_LEFT);
         $description="Car wash invoice ".$invoiceNo." generated for ".$order->car->make.'('.$order->car->model.')';
 
+        dd($order->car->user->customer_id,$salesRecord['id'],$invoiceNo,$description);
         $response = $this->client->request('POST', $this->url.'/invoices/', [
             'body' => '{"currency":"SAR","language":"en","status":"SENT","line_items":[
             {
