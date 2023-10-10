@@ -83,10 +83,8 @@ function one_signal_notification($to,$title,$route,$sendToRole=false){
         OneSignalFacade::sendNotificationToUser(
             $title,
             $device->device_id,
-            $route['url'],
-            $route['id'],
-            $buttons = null,
-            $schedule = null
+            $url=null,
+            $data=$route,
         );
     }
 }
