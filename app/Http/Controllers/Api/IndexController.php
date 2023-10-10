@@ -455,7 +455,7 @@ class IndexController extends Controller
                 $task->save();
                 $lastSunday=$x[0];
                 $user=User::find($request->user_id);
-                one_signal_notification($user->id,"{$user->name} you have a car wash today",['url'=>'task','id'=>$task->id]);
+                one_signal_notification($user->id,$user->name." you have a car wash today",['url'=>'task','id'=>$task->id]);
 
             }
         }
@@ -467,7 +467,7 @@ class IndexController extends Controller
             logActivity(auth()->user()->name.' has created new order have one time wash for '.$customer->name);
         }
         $order=Order::with('car','car.user')->find($order->id);
-        
+
         $this->bookInvoice($order);
 
         return $this->sendSuccess("Car and subscription created successfully", $car);
