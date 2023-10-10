@@ -455,7 +455,7 @@ class IndexController extends Controller
                 $task->save();
                 $lastSunday=$x[0];
                 $user=User::find($request->user_id);
-                one_signal_notification($user->id,$user->name." you have a car wash today",['url'=>'task','id'=>$task->id]);
+                one_signal_notification($user->id,$user->name." you have a car wash today",json_encode(['url'=>'task','id'=>$task->id]));
 
             }
         }
