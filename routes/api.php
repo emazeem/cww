@@ -22,6 +22,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('fetch4sundays', [IndexController::class, 'fetch4sundays']);
     Route::post('fetchMyCars', [IndexController::class, 'fetchMyCars']);
     Route::post('fetchTask', [IndexController::class, 'fetchTask']);
+    Route::post('updateTask', [IndexController::class, 'updateTask']);
+    Route::post('taskAction', [IndexController::class, 'taskAction']);
     Route::post('fetchCars', [IndexController::class, 'fetchCars']);
     Route::post('cancelSubscription', [IndexController::class, 'cancelSubscription']);
     Route::post('fetchUser', [IndexController::class, 'fetchUser']);

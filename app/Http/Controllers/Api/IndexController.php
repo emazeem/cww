@@ -119,6 +119,38 @@ class IndexController extends Controller
         $task->images=$images;
         return $this->sendSuccess("Task fetched successful", $task);
     }
+    public function updateTask(Request $request){
+        $validators = Validator($request->all(), [
+            'id' => 'required',
+            'date_time' => 'required',
+        ],[
+            'id.required'=>'Task id is required'
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        $x=explode('#',$request->date_time);
+        $task=Tasks::find($request->id);
+        $task->date=$x[0];
+        $task->time=$x[1];
+        $task->save();
+        return $this->sendSuccess("Task updated successful", $task);
+    }
+   public function taskAction(Request $request){
+       $validators = Validator($request->all(), [
+           'id' => 'required',
+       ],[
+           'id.required'=>'Task id is required'
+       ]);
+       if ($validators->fails()) {
+           return $this->sendError($validators->messages()->first(), null);
+       }
+       $task=Tasks::find($request->id);
+       $task->approval=$request->action;
+       $task->comments=$request->reason ?? null;
+       $task->save();
+       return $this->sendSuccess("Action save successful", $task);
+    }
 
     public function fetchSubscriptions(Request $request){
         $packages=Package::all();

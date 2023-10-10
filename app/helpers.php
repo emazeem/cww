@@ -27,6 +27,13 @@ class OrderPayment
     const Pending = 0;
     const Complete = 1;
 }
+class TaskApprovalActions
+{
+    const Pending = 0;
+    const Approved = 1;
+    const RescheduleRequested = 1;
+}
+
 
 
 function getNext4Sundays() {
