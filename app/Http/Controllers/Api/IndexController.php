@@ -455,9 +455,9 @@ class IndexController extends Controller
                 $task->save();
                 $lastSunday=$x[0];
                 $user=User::find($request->user_id);
-                /*one_signal_notification($user->id,$user->name." you have a car wash today",
+                one_signal_notification($user->id,$user->name." you have a car wash today",
                     ['url'=>'task','id'=>$task->id]
-                );*/
+                );
 
             }
         }
@@ -573,7 +573,6 @@ class IndexController extends Controller
         dd($tasksByDate);
     }
     public function home(){
-        one_signal_notification(2,'Em Azeem',['url'=>'url','id'=>2]);
         return view('welcome');
     }
     public function checkout(Request $req){
