@@ -455,10 +455,7 @@ class IndexController extends Controller
                 $task->save();
                 $lastSunday=$x[0];
                 $user=User::find($request->user_id);
-                one_signal_notification($user->id,$user->name." you have a car wash today",
-                    ['url'=>'task','id'=>$task->id]
-                );
-
+                one_signal_notification($user->id,$user->name." you have a car wash today", ['url'=>'task','id'=>$task->id]);
             }
         }
         if($subscription->is_recurring==1){
