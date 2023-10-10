@@ -183,7 +183,7 @@ class IndexController extends Controller
         $file->move('storage/expense', $filename);
         $expense->image = $filename;
         $expense->save();
-        one_signal_notification(\Role::Manager,auth()->user()->name.' added new expense',['url'=>'expense','id'=>null],true);
+
         return $this->sendSuccess("Expense added successfully",true);
     }
     public function fetchExpenses(Request $request){
