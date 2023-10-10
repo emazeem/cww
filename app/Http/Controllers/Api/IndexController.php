@@ -466,6 +466,8 @@ class IndexController extends Controller
         }else{
             logActivity(auth()->user()->name.' has created new order have one time wash for '.$customer->name);
         }
+        $order=Order::with('car','car.user')->find($order->id);
+        
         $this->bookInvoice($order);
 
         return $this->sendSuccess("Car and subscription created successfully", $car);
