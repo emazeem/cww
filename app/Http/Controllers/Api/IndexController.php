@@ -345,6 +345,18 @@ class IndexController extends Controller
 
         return $this->sendSuccess("Subscription cancelled successful",true);
     }
+    public function deleteAccount(Request $request){
+        $validators = Validator($request->all(), [
+            'id' => 'required',
+        ],[
+            'id.required'=>'User id is required'
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        User::find($request->id)->delete();
+        return $this->sendSuccess("User deleted successful",true);
+    }
     public function fetchUser(Request $request){
         $user=auth()->user();
         return $this->sendSuccess("Auth user fetched successful",$user);

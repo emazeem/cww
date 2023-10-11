@@ -14,4 +14,13 @@ class Car extends Model
     public function order(){
         return $this->belongsTo(Order::class,'id','car_id');
     }
+
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleted(function ($car) {
+            $car->order()->delete();
+        });
+    }
 }

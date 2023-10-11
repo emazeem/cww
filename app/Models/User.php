@@ -46,4 +46,21 @@ class User extends Authenticatable
     public function cars(){
         return $this->hasMany(Car::class);
     }
+    public function devices(){
+        return $this->hasMany(UserDevices::class);
+    }
+    public function expenses(){
+        return $this->hasMany(Expense::class);
+    }
+
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleted(function ($user) {
+            $user->cars()->delete();
+            $user->devices()->delete();
+            $user->expenses()->delete();
+        });
+    }
 }

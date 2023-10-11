@@ -19,4 +19,11 @@ class Order extends Model
         return $this->belongsTo(Package::class,'subscription_id','id');
     }
 
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleted(function ($order) {
+            $order->tasks()->delete();
+        });
+    }
 }

@@ -17,4 +17,12 @@ class Tasks extends Model
     public function getTimeAttribute(){
         return date('g:i A',strtotime($this->attributes['time']));
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleted(function ($task) {
+            $task->assets()->delete();
+        });
+    }
 }

@@ -40,4 +40,5 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('fetchExpenses', [IndexController::class, 'fetchExpenses']);
     Route::post('fetchTasksFromDate', [IndexController::class, 'fetchTasksFromDate']);
     Route::post('fetchTasksFromDates', [IndexController::class, 'fetchTasksFromDates']);
+    Route::post('deleteAccount', [IndexController::class, 'deleteAccount']);
 });
