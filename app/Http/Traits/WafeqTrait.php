@@ -46,7 +46,7 @@ trait WafeqTrait {
         });
         $salesRecord = reset($salesRecord);
 
-        $invoiceNo='INV#'.str_pad($order->id,5,0,STR_PAD_LEFT);
+        $invoiceNo='INV#'.date('d-m-Y-H-i-s').'#'.str_pad($order->id,5,0,STR_PAD_LEFT);
         $description="Car wash invoice ".$invoiceNo." generated for ".$order->car->make.'('.$order->car->model.')';
 
         $response = $this->client->request('POST', $this->url.'/invoices/', [
