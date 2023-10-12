@@ -447,9 +447,7 @@ class IndexController extends Controller
         }
     }
     public function createCarSubscription(Request $request){
-        $inside=explode('@',$request->inside);
-        $outside=explode('@',$request->outside);
-        dd($inside[0],$inside[1],$inside[2],$inside[3],$inside[0]=='true'?1:0,$inside[1]=='true'?1:0,$inside[2]=='true'?1:0,$inside[3]=='true'?1:0,);
+
         $validators = Validator($request->all(), [
             'make' => 'required',
             'model' => 'required',
@@ -501,8 +499,8 @@ class IndexController extends Controller
                 $task->time=$x[1];
                 $task->status=0;
                 $task->order_id=$order->id;
-                $task->inside_wash=$inside[$k]==true?1:0;
-                $task->outside_wash=$outside[$k]==true?1:0;
+                $task->inside_wash=$inside[$k]=='true'?1:0;
+                $task->outside_wash=$outside[$k]=='true'?1:0;
                 $task->save();
                 $lastSunday=$x[0];
                 $user=User::find($request->user_id);
