@@ -487,7 +487,7 @@ class IndexController extends Controller
         $dateAndTime=[];
         $lastSunday=date('Y-m-d');
 
-        foreach ($timeData as $timeDatum){
+        foreach ($timeData as $k=>$timeDatum){
             $x=explode('#',$timeDatum);
             if (count($x)==2){
                 $dateAndTime[$x[0]]=$x[1];
@@ -496,6 +496,8 @@ class IndexController extends Controller
                 $task->time=$x[1];
                 $task->status=0;
                 $task->order_id=$order->id;
+                $task->inside_wash=$request->inside[$k];
+                $task->outside_wash=$request->outside[$k];
                 $task->save();
                 $lastSunday=$x[0];
                 $user=User::find($request->user_id);
