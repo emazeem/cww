@@ -447,6 +447,17 @@ class IndexController extends Controller
         }
     }
     public function createCarSubscription(Request $request){
+        $timeData=explode('@',$request->date_time);
+        foreach ($timeData as $k=>$timeDatum){
+            $x=explode('#',$timeDatum);
+            if (count($x)==2){
+                echo $request->inside[$k];
+                echo '#'.$request->inside[$k]==true?1:0;
+                echo '------';
+                echo $request->outside[$k]==true?1:0;
+            }
+        }
+        dd(1);
         $validators = Validator($request->all(), [
             'make' => 'required',
             'model' => 'required',
