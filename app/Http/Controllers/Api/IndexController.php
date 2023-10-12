@@ -496,8 +496,8 @@ class IndexController extends Controller
                 $task->time=$x[1];
                 $task->status=0;
                 $task->order_id=$order->id;
-                $task->inside_wash=$request->inside[$k];
-                $task->outside_wash=$request->outside[$k];
+                $task->inside_wash=$request->inside[$k]==true?1:0;
+                $task->outside_wash=$request->outside[$k]==true?1:0;
                 $task->save();
                 $lastSunday=$x[0];
                 $user=User::find($request->user_id);
