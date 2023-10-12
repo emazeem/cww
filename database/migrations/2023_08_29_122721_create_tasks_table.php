@@ -18,6 +18,10 @@ return new class extends Migration
             $table->time('time');
             $table->integer('status')->default(0);
             $table->string('approval')->comment('Pending0 Approved1 RescheduleRequest2')->default(0);
+            $table->integer('inside_wash')->default(0);
+            $table->integer('outside_wash')->default(0);
+            $table->string('inside_status')->nullable();
+            $table->string('outside_status')->nullable();
             $table->string('comments')->nullable();
             $table->timestamps();
         });
