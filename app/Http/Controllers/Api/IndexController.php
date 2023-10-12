@@ -447,7 +447,7 @@ class IndexController extends Controller
         }
     }
     public function createCarSubscription(Request $request){
-        dd($request->inside,$request->outside);
+        dd(explode('@',$request->inside));
         $validators = Validator($request->all(), [
             'make' => 'required',
             'model' => 'required',
