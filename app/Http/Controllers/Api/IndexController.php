@@ -447,17 +447,7 @@ class IndexController extends Controller
         }
     }
     public function createCarSubscription(Request $request){
-        $timeData=explode('@',$request->date_time);
-        foreach ($timeData as $k=>$timeDatum){
-            $x=explode('#',$timeDatum);
-            if (count($x)==2){
-                echo $request->inside[$k];
-                echo '#'.$request->inside[$k]==true?1:0;
-                echo '------';
-                echo $request->outside[$k]==true?1:0;
-            }
-        }
-        dd(1);
+
         $validators = Validator($request->all(), [
             'make' => 'required',
             'model' => 'required',
@@ -498,6 +488,8 @@ class IndexController extends Controller
         $dateAndTime=[];
         $lastSunday=date('Y-m-d');
 
+        $inside=explode('@',$request->inside);
+        $outside=explode('@',$request->outside);
         foreach ($timeData as $k=>$timeDatum){
             $x=explode('#',$timeDatum);
             if (count($x)==2){
@@ -507,8 +499,8 @@ class IndexController extends Controller
                 $task->time=$x[1];
                 $task->status=0;
                 $task->order_id=$order->id;
-                $task->inside_wash=$request->inside[$k]==true?1:0;
-                $task->outside_wash=$request->outside[$k]==true?1:0;
+                $task->inside_wash=$inside[$k]==true?1:0;
+                $task->outside_wash=$outside[$k]==true?1:0;
                 $task->save();
                 $lastSunday=$x[0];
                 $user=User::find($request->user_id);
