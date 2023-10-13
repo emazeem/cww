@@ -17,7 +17,7 @@ return new class extends Migration
             $table->date('date');
             $table->time('time');
             $table->integer('status')->default(0);
-            $table->string('approval')->comment('Pending0 Approved1 RescheduleRequest2')->default(0);
+            $table->string('approval')->comment('Pending0 Approved1 RescheduleRequest2 Rescheduled3')->default(0);
             $table->integer('inside_wash')->default(0);
             $table->integer('outside_wash')->default(0);
             $table->string('inside_status')->nullable();

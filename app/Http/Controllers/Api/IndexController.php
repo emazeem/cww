@@ -133,6 +133,8 @@ class IndexController extends Controller
         $task=Tasks::find($request->id);
         $task->date=$x[0];
         $task->time=$x[1];
+        $task->comments=null;
+        $task->approval=\TaskApprovalActions::Rescheduled;
         $task->save();
         return $this->sendSuccess("Task updated successful", $task);
     }
