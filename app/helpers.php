@@ -29,10 +29,10 @@ class OrderPayment
 }
 class TaskApprovalActions
 {
-    const Pending = 0;
-    const ApprovedFromClient = 2;
-    const RescheduleRequested = 1;
-    const Rescheduled = 3;
+    const Pending = '0';
+    const ApprovedFromClient = '2';
+    const RescheduleRequested = '1';
+    const Rescheduled = '3';
 }
 
 
