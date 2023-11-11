@@ -110,6 +110,11 @@ class IndexController extends Controller
         $customers=User::where('role',\Role::Customer)->get();
         return $this->sendSuccess("Customers fetched successful", $customers);
     }
+    public function fetchTechnicians(Request $request){
+        $customers=User::where('role',\Role::Technician)->get();
+        return $this->sendSuccess("Technician fetched successful", $customers);
+    }
+
     public function fetchTask(Request $request){
         $task=Tasks::with('order','order.car','order.car.user')->where('id',$request->id)->first();
         $images=[];
