@@ -135,6 +135,12 @@ class IndexController extends Controller
         $task->time=$x[1];
         $task->comments=null;
         $task->approval=\TaskApprovalActions::Rescheduled;
+        if ($request->inside_wash){
+            $task->inside_wash=$request->inside_wash=='true'?1:0;
+        }
+        if ($request->outside_wash){
+            $task->outside_wash=$request->outside_wash=='true'?1:0;
+        }
         $task->save();
         return $this->sendSuccess("Task updated successful", $task);
     }
