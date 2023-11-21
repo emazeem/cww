@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('long')->nullable();
             $table->string('lat')->nullable();
             $table->string('customer_id')->nullable();
+            $table->integer('group_id')->comment('For customers to grouped for technicians. Tech can have many customers.');
             $table->rememberToken();
             $table->timestamps();
         });

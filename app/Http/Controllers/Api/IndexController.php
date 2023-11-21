@@ -92,6 +92,7 @@ class IndexController extends Controller
         $userdata->phone = $request->phone;
         $userdata->role = $request->role;
         $userdata->address = $request->address;
+        $userdata->group_id = $request->group_id;
         $userdata->password = Hash::make($request->password);
         if ($request->hasfile('profile')) {
             $file = $request->file('profile');
