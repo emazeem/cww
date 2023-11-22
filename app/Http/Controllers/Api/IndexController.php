@@ -547,11 +547,12 @@ class IndexController extends Controller
         }
         $user = User::find($request->user_id);
         $user->name=$request->name;
-        //$user->email=$request->email;
         $user->phone=$request->phone;
         $user->address=$request->address;
+        if($request->group_id){
+            $user->group_id=$request->group_id;
+        }
         $user->save();
-
         return $this->sendSuccess("User details updated successfully", true);
     }
     public function updateLocation(Request $request){
