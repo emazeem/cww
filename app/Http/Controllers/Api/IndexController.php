@@ -371,6 +371,22 @@ class IndexController extends Controller
         User::find($request->id)->delete();
         return $this->sendSuccess("User deleted successful",true);
     }
+    public function updateOrderType(Request $request){
+        $validators = Validator($request->all(), [
+            'id' => 'required',
+            'type' => 'required',
+        ],[
+            'id.required'=>'Order id is required'
+        ]);
+        if ($validators->fails()) {
+            return $this->sendError($validators->messages()->first(), null);
+        }
+        $order=Order::find($request->id);
+        $order->type=$request->type;
+        $order->save();
+        return $this->sendSuccess("Order type assigned successful",true);
+    }
+
     public function fetchUser(Request $request){
         $user=auth()->user();
         return $this->sendSuccess("Auth user fetched successful",$user);

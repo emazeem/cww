@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('status')->default(0);
             $table->date('renew_on')->nullable();
             $table->string('order_id')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }
